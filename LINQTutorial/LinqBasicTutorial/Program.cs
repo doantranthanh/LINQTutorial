@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,15 +36,27 @@ namespace LinqBasicTutorial
                     i++;
                 }
             }
-
+            Console.WriteLine();
             Console.WriteLine("Delegate");
 
-            Student[] students2 = StudentExtension.where(studentArray, delegate(Student std)
-            {
-                return std.Age > 12 && std.Age < 20;
-            });
-
+            Student[] students2 = StudentExtension.where(studentArray, std => std.Age > 12 && std.Age<20);
             Console.WriteLine(students2[1].StudentName);
+
+
+            var students3 = StudentExtension.@where(studentArray, std => std.StudentName == "Bill");
+
+            Console.WriteLine(students3[0].StudentName);
+            Console.WriteLine();
+
+            Console.WriteLine("Using LINQ");
+            Console.WriteLine("Find Teenager Students");
+            var teenAgerStudents = studentArray.Where(s => s.Age > 12 && s.Age < 20).ToArray();
+            Console.WriteLine();
+            Console.WriteLine("Use LINQ to find fist student whose name is Bill");
+            var bill = studentArray.Where(s => String.Equals("Bill", s.StudentName)).FirstOrDefault();
+            Console.WriteLine();
+            // Use LINQ to find student whose StudentID is 5
+            Student student5 = studentArray.Where(s => s.StudentID == 5).FirstOrDefault();
         }
     }
 
